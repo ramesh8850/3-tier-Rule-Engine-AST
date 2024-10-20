@@ -28,8 +28,17 @@ The Rule Engine project provides a framework for defining, combining, and evalua
    git clone https://github.com/yourusername/rule-engine.git
    cd rule-engine
 
-### Install dependencies:
-- npm install
+## Installation Requirements
+
+To run the Rule Engine Application, you need to install the following dependencies:
+
+1. **Node.js**: Download and install Node.js from [nodejs.org](https://nodejs.org/).
+
+2. **PostgreSQL**: Install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/).
+
+3. **Project Dependencies**: After cloning the repository, navigate to the project directory and run the following command to install the required npm packages:
+   ```bash
+   npm install express body-parser cors ejs pg dotenv
 
 ### Set up your PostgreSQL database and update the database configuration in
 - `Config/Rule.js
