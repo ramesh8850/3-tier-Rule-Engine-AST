@@ -1,0 +1,73 @@
+body {
+    background-color: #e9ecef; /* Light gray background */
+    color: #343a40; /* Dark text color */
+}
+
+h1, h2 {
+    color: #007bff; /* Bootstrap primary color */
+}
+
+.container {
+    margin: 20px auto;
+}
+
+.card {
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-custom {
+    background-color: orangered; /* Green button */
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: orangered; /* Darker green on hover */
+}
+
+.rule-container {
+    border: 1px solid #007bff; /* Blue border for rule containers */
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #f8f9fa; /* Light background */
+    margin-bottom: 10px;
+}
+
+pre {
+    background-color: #f8f9fa; /* Light background for preformatted text */
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+/* Two-column layout */
+.ast-container {
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    height: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .btn-custom {
+        font-size: 12px;
+    }
+}
+
+.duplicate-rule-message {
+    color: #dc3545; /* Bootstrap danger color */
+    font-weight: bold;
+}
+
+.btn-link{
+    background-color: rgb(50, 197, 165);
+    color: white;
+}
