@@ -35,7 +35,7 @@ The Rule Engine project provides a framework for defining, combining, and evalua
 - `Config/Rule.js
 
 ### Start the server
-- npm start
+- nodemon server.js
 
 ### Open your browser
 - http://localhost:3000
