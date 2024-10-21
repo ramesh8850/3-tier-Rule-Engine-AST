@@ -90,6 +90,14 @@ To run the Rule Engine Application, you need to install the following dependenci
 - Evaluate a rule by providing the rule name and data in JSON format.
 - ![image](https://github.com/user-attachments/assets/e92d5565-4fbe-46b4-9263-e926b948bb7b)
 - Please input correct input rules and json data like  dont provide "{ key: value{ object}}}" avoid double quotes for the input of json data and create rule data.
+- Creation of table in Postgress sql
+- CREATE TABLE IF NOT EXISTS Engine (
+                id SERIAL PRIMARY KEY,
+                ruleName VARCHAR(255) UNIQUE NOT NULL,
+                ruleAST JSON NOT NULL,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
 ## Contributing
 Contributions are welcome! If you have suggestions for improvements, please open an issue or submit a pull request.
 
