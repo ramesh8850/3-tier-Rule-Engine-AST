@@ -1,4 +1,4 @@
-# Rule Engine
+# 3-Tier Rule Engine
 
 ## Overview
 The Rule Engine project provides a framework for defining, combining, and evaluating rules using Abstract Syntax Trees (AST). It allows users to create rules, combine them with logical operators, and evaluate them against data. This project is aimed at providing a robust solution for scenarios where decision-making rules are required.
@@ -100,6 +100,7 @@ To run the Rule Engine Application, you need to install the following dependenci
 ## Note
 - Please input correct input rules or json data like  dont provide "{ key: value{ object}}}" avoid double quotes for the input of json data and same for create rule data.
 - Use operands is caps 'AND' or 'OR' dont provide in lower case letters.
+- Feel free to provide feedbacks.Feedback helps me to improve the code.
 ## Contributing
 Contributions are welcome! If you have suggestions for improvements, please open an issue or submit a pull request.
 
