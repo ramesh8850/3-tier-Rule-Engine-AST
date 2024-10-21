@@ -10,9 +10,9 @@ function generateTreeHTML(node, prefix = '', isLeft = true) {
     return treeHTML;
 }
 
-function displayTree(tree) {
+function displayTree(tree, targetId) {
     const treeHTML = generateTreeHTML(tree);
-    document.getElementById('combined-rules-tree').innerHTML = treeHTML;
+    document.getElementById(targetId).innerHTML = treeHTML; // Display in the specified target
 }
 
 // Handle Create Rule form submission
@@ -20,6 +20,7 @@ document.getElementById('create-rule-form').addEventListener('submit', async fun
     event.preventDefault();
     const ruleName = document.getElementById('ruleName').value;
     const ruleString = document.getElementById('ruleString').value;
+
     const response = await fetch('/api/rules/create_rule', {
         method: 'POST',
         headers: {
@@ -28,19 +29,18 @@ document.getElementById('create-rule-form').addEventListener('submit', async fun
         body: JSON.stringify({ ruleName, ruleString }),
     });
 
-    // Clear previous messages
-    document.getElementById('duplicate-rule-message').textContent = '';
-    document.getElementById('create-rule-result').textContent = '';
-
     if (response.ok) {
         const result = await response.json();
-        const treeHTML = generateTreeHTML(result.ruleAST);
-        document.getElementById('create-rule-result').innerHTML = treeHTML;
-        displayTree(result.ruleAST);
+        const rule = result.rule;
+        console.log(rule.ruleast);
+
+        // Display the AST and rule name
+        displayTree(rule.ruleast, 'combined-rules-tree');
+        document.getElementById('rule-name-display').innerText = `Created Rule: ${ruleName}`;
     } else {
         const error = await response.text();
         if (error.includes('already exists')) {
-            document.getElementById('duplicate-rule-message').textContent = `Rule "${ruleName}" already exists.`;
+            document.getElementById('create-rule-result').innerHTML = `Error: Rule "${ruleName}" already exists!`;
         } else {
             document.getElementById('create-rule-result').innerHTML = `Error: ${error}`;
         }
@@ -52,6 +52,7 @@ document.getElementById('combine-rules-form').addEventListener('submit', async f
     event.preventDefault();
     const op = document.getElementById('operator1').value;
     const rules = Array.from(document.querySelectorAll('input[id^="combine-rule"]')).map(input => input.value);
+    
     const response = await fetch('/api/rules/combine_rules', {
         method: 'POST',
         headers: {
@@ -62,9 +63,11 @@ document.getElementById('combine-rules-form').addEventListener('submit', async f
 
     if (response.ok) {
         const result = await response.json();
-        const treeHTML = generateTreeHTML(result.ruleAST);
-        document.getElementById('combine-rules-result').innerHTML = treeHTML;
-        displayTree(result.ruleAST);
+        console.log(result.combinedRule);
+        
+        // Display the combined rule tree and rule name
+        displayTree(result.combinedRule.ruleast, 'combined-rules-tree');
+        document.getElementById('rule-name-display').innerText = `Combined Rule: ${result.combinedRule.rulename}`;
     } else {
         const error = await response.text();
         document.getElementById('combine-rules-result').innerHTML = `Error: ${error}`;
@@ -93,6 +96,7 @@ document.getElementById('evaluate-rule-form').addEventListener('submit', async f
     event.preventDefault();
     const ast = document.getElementById('evaluate-ast').value;
     const data = document.getElementById('evaluate-data').value;
+    
     const response = await fetch('/api/rules/evaluate_rule', {
         method: 'POST',
         headers: {
@@ -106,6 +110,7 @@ document.getElementById('evaluate-rule-form').addEventListener('submit', async f
         document.getElementById('evaluate-rule-result').innerHTML = JSON.stringify(result, null, 2);
     } else {
         const error = await response.text();
+        console.error("Error response:", error);
         document.getElementById('evaluate-rule-result').innerHTML = `Error: ${error}`;
     }
 });

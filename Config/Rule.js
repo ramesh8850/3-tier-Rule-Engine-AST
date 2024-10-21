@@ -1,67 +1,59 @@
-// models/rule.js
-import { Sequelize, DataTypes } from 'sequelize';
+import pg from 'pg';
 
-// Create a new Sequelize instance for PostgreSQL
-const sequelize = new Sequelize('Rules', 'postgres', 'vnrvjiet', {
+const pool = new pg.Pool({
+    user: 'postgres',
     host: 'localhost',
-    dialect: 'postgres',
+    database: 'Rules',
+    password: 'vnrvjiet',
+    port: 5432,
 });
 
-// Define the Rule model
-const Rule = sequelize.define('Rule', {
-    ruleName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    ruleAST: {
-        type: DataTypes.JSON, // Use JSON type for rule AST
-        allowNull: false,
-    },
-});
+const createDatabase = async () => {
+    const client = new pg.Client({
+        user: 'postgres',
+        host: 'localhost',
+        database: 'Rules',
+        password: 'vnrvjiet',
+        port: 5432,
+    });
 
-// Export only the Rule model
-// // Define the Rule structure
-// const Rule = {
-//     ruleName: {
-//         type: 'VARCHAR(255)',  // Type for ruleName
-//         allowNull: false,      // Not nullable
-//         unique: true           // Must be unique
-//     },
-//     ruleAST: {
-//         type: 'JSON',          // Type for ruleAST
-//         allowNull: false       // Not nullable
-//     }
-// };
+    try {
+        await client.connect();
+        await client.query('CREATE DATABASE Rules');
+        console.log('Database "Rules" created successfully.');
+    } catch (error) {
+        if (error.code !== '42P04') { // Ignore if the database already exists
+            console.error('Error creating database:', error);
+        } else {
+            console.log('Database "Rules" already exists.');
+        }
+    } finally {
+        await client.end();
+    }
+};
 
-// Export the defined Rule structure
-export default Rule
+const createRulesTable = async () => {
+    try {
+        const createTableQuery = `
+            CREATE TABLE IF NOT EXISTS Engine (
+                id SERIAL PRIMARY KEY,
+                ruleName VARCHAR(255) UNIQUE NOT NULL,
+                ruleAST JSON NOT NULL,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `;
+        await pool.query(createTableQuery);
+        console.log('Table "Engine" created successfully.');
+    } catch (error) {
+        console.error('Error creating table:', error);
+    }
+};
 
-// import pool from '../config/database.js'; // Import the database connection
+const initializeDatabase = async () => {
+    await createDatabase();
+    await createRulesTable();
+};
 
-// Rule class for database operations
-// class Rule {
-//   // Method to create a new rule
-//   static async create(ruleName, ruleAST) {
-//     const query = 'INSERT INTO rules (rule_name, rule_ast) VALUES ($1, $2) RETURNING *';
-//     const values = [ruleName, ruleAST];
-//     const { rows } = await pool.query(query, values);
-//     return rows[0]; // Return the created rule
-//   }
-
-//   // Method to find a rule by name
-//   static async findByName(ruleName) {
-//     const query = 'SELECT * FROM rules WHERE rule_name = $1';
-//     const { rows } = await pool.query(query, [ruleName]);
-//     return rows[0]; // Return the found rule
-//   }
-
-//   // Method to find multiple rules by their names
-//   static async findByNames(ruleNames) {
-//     const query = 'SELECT * FROM rules WHERE rule_name = ANY($1)';
-//     const { rows } = await pool.query(query, [ruleNames]);
-//     return rows; // Return all matching rules
-//   }
-// }
-
-// export default Rule;
+// Export the pool for reuse in other modules
+export { pool, initializeDatabase };

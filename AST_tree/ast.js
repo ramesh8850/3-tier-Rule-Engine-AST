@@ -1,55 +1,49 @@
 function parseRuleString(ruleString) {
-    const tokens = ruleString.match(/(\(|\)|AND|OR|<=|>=|!=|<|>|=|[^()\s]+)/g);
-    const stack = [];
-    const operators = [];
+  const tokens = ruleString.match(/(\(|\)|AND|OR|<=|>=|!=|<|>|=|[^()\s]+)/g);
+  console.log(tokens)
+  const stack = [];
+  const operators = [];
 
-    function popOperator() {
-        const operator = operators.pop();
-        const right = stack.pop();
-        const left = stack.pop();
-        
-        // console.log("****"+operator+left+right+"****");
-        stack.push({ type: 'operator', operator, left, right });
-    }
+  function popOperator() {
+      const operator = operators.pop();
+      const right = stack.pop();
+      const left = stack.pop();
+      stack.push({ type: 'operator', operator, left, right });
+  }
 
-    for (let i = 0; i < tokens.length; i++) {
-        // console.log(tokens[i]);
-        const token = tokens[i].trim();
-        if (token === ' ') continue; // Skip empty tokens (spaces)
+  for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i].trim();
+      if (token === '') continue; // Skip empty tokens (spaces)
 
-        if (token === 'AND' || token === 'OR') {
-            while (operators.length && operators[operators.length - 1] !== '(') {
-                popOperator();
-            }
-            operators.push(token);
-        } else if (token === '(') {
-            operators.push(token);
-        } else if (token === ')') {
-            while (operators.length && operators[operators.length - 1] !== '(') {
-                popOperator();
-            }
-            operators.pop();
-        } else {
-            // const [key, operator, value] = token.split(/(<=|>=|<|>|=|!=|)/).map(s => s.trim());
-            let key=null,operator=null,value=null;
-            while(i<tokens.length && (key==null||operator==null||value==null) ){
-              if(key===null) key=tokens[i];
-              else if(operator==null) operator=tokens[i];
-              else value=tokens[i];
-              i++;
-            }
-            i--;
-            // console.log("---"+key+operator+value+"---");
-            stack.push({ type: 'operand', key, operator, value });
-        }
-    }
+      if (token === 'AND' || token === 'OR') {
+          while (operators.length && operators[operators.length - 1] !== '(') {
+              popOperator();
+          }
+          operators.push(token);
+      } else if (token === '(') {
+          operators.push(token);
+      } else if (token === ')') {
+          while (operators.length && operators[operators.length - 1] !== '(') {
+              popOperator();
+          }
+          operators.pop();
+      } else {
+          // Correct operand parsing logic
+          let key = token;
+          let operator = tokens[++i];  // Move to the operator
+          let value = tokens[++i];  // Move to the value
+          
+          stack.push({ type: 'operand', key, operator, value });
+      }
+  }
 
-    while (operators.length) {
-        popOperator();
-    }
+  while (operators.length) {
+      popOperator();
+  }
 
-    return stack[0];
+  return stack[0];  // Return root of AST
 }
+
 
 function printTree(node,prefix = '', isLeft = true) {
     if (!node) return;
@@ -70,42 +64,69 @@ function combineNodes(rules,op) {
 }
 
 function evaluate(node, data) {
-    if (node.type === 'operator') {
-      const left = evaluate(node.left, data);
-      const right = evaluate(node.right, data);
-      if (node.operator === 'AND') {
-        return left && right;
-      } else if (node.operator === 'OR') {
-        return left || right;
-      }
-    } else if (node.type === 'operand') {
+  if (node.type === 'operand') {
       let { key, operator, value } = node;
-      if (typeof value === 'string'){
-        if (value[0] === "'" && value[value.length - 1] === "'") {
-          value = value.slice(1, value.length - 1);
-        }
+      
+      // Trim and sanitize key
+      key = key.trim();
+      
+      // console.log("Data input:", data);
+      // console.log(`Evaluating operand: key = ${key}, operator = ${operator}, value = ${value}`);
+
+      // Check if key, operator, and value are defined
+      if (!key || !operator || !value) {
+          console.error("Invalid operand node:", node);
+          return false; // Return false or handle as needed
       }
-    // console.log(value, data[key]);
-      switch (operator) {
-        case '>':
-          return data[key] > value;
-        case '<':
-          return data[key] < value;
-        case '>=':
-          return data[key] >= value;
-        case '<=':
-          return data[key] <= value;
-        case '==':
-          return data[key] == value;
-        case '!=':
-          return data[key] != value;
-        case '=': // assuming '=' is the same as '=='
-          return data[key] == value;
-        default:
+
+      // Access dataValue, log if key is missing
+      const dataValue = data[key];
+      if (dataValue === undefined) {
+          console.error(`Key "${key}" not found in data`);
           return false;
       }
-    }
-    return false;
+      
+      // Strip quotes from value (for string values like "'Sales'")
+      if (typeof value === 'string') {
+          value = value.replace(/'/g, '').trim();
+      }
+
+      // console.log(`Evaluating operand: key = ${key}, operator = ${operator}, value = ${value}, dataValue = ${dataValue}`);
+
+      switch (operator) {
+          case '>':
+              return dataValue > parseFloat(value); 
+          case '<':
+              return dataValue < parseFloat(value); 
+          case '=':
+              return dataValue === value; 
+          default:
+              console.error("Unknown operator:", operator);
+              return false;
+      }
   }
+
+  // console.log("Evaluating node:", JSON.stringify(node, null, 2));
+
+  if (node.type === 'operator') {
+      const leftEval = evaluate(node.left, data);
+      const rightEval = evaluate(node.right, data);
+
+      switch (node.operator) {
+          case 'AND':
+              return leftEval && rightEval;
+          case 'OR':
+              return leftEval || rightEval;
+          default:
+              console.error("Unknown operator:", node.operator);
+              return false;
+      }
+  }
+
+  console.error("Unrecognized node type:", node.type);
+  return false;
+}
+
+
   
 export { parseRuleString, combineNodes, evaluate, printTree };    

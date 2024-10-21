@@ -1,3 +1,4 @@
+/* Body and General Styling */
 body {
     background-color: #e9ecef; /* Light gray background */
     color: #343a40; /* Dark text color */
@@ -11,63 +12,116 @@ h1, h2 {
     margin: 20px auto;
 }
 
+/* Card Styling */
 .card {
     margin-bottom: 20px;
     border: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for cards */
 }
 
 .card-header {
-    background-color: #007bff;
+    background-color: #007bff; /* Bootstrap primary color */
     color: white;
+    text-align: center; /* Centered header text */
+    font-size: 1.25rem;
 }
 
+/* Button Custom Styling */
 .btn-custom {
-    background-color: orangered; /* Green button */
+    background-color: orangered; /* Custom button color */
     color: white;
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
 .btn-custom:hover {
-    background-color: orangered; /* Darker green on hover */
+    background-color: #e55337; /* Darker shade of orangered on hover */
 }
 
+.btn-link {
+    background-color: rgb(50, 197, 165); /* Custom color for adding rules */
+    color: white;
+    border-radius: 4px;
+    padding: 6px 12px;
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s;
+}
+
+.btn-link:hover {
+    background-color: rgb(36, 180, 148); /* Darker shade of the custom color */
+}
+
+/* Form and Rule Container Styling */
 .rule-container {
     border: 1px solid #007bff; /* Blue border for rule containers */
     border-radius: 4px;
     padding: 15px;
-    background-color: #f8f9fa; /* Light background */
+    background-color: #f8f9fa; /* Light gray background */
     margin-bottom: 10px;
 }
 
+/* Preformatted Text (For Displaying JSON or AST) */
 pre {
     background-color: #f8f9fa; /* Light background for preformatted text */
     padding: 15px;
     border-radius: 4px;
-    overflow-x: auto;
+    border: 1px solid #ced4da;
+    overflow-x: auto; /* Enable horizontal scroll if necessary */
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
-/* Two-column layout */
+/* AST Display Section Styling */
 .ast-container {
     border: 1px solid #007bff;
     border-radius: 4px;
     background-color: #f8f9fa;
     padding: 15px;
     height: 100%;
+    margin-bottom: 20px;
+}
+
+/* Duplicate Rule Message Styling */
+.duplicate-rule-message {
+    color: #dc3545; /* Bootstrap danger color */
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .btn-custom {
         font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    h1, h2 {
+        font-size: 1.5rem;
     }
 }
 
-.duplicate-rule-message {
-    color: #dc3545; /* Bootstrap danger color */
+/* Adjusting Form Inputs for Better Spacing */
+.form-group label {
     font-weight: bold;
 }
 
-.btn-link{
-    background-color: rgb(50, 197, 165);
-    color: white;
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+/* Rule Name Display Section */
+#rule-name-display {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #007bff; /* Primary color for rule name display */
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 10px;
 }

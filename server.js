@@ -1,11 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import path from 'path'
 import router from './Connector/ruleRoutes.js'
-
-// Import the Rule model to ensure database connection and sync
-import './Config/Rule.js' // Ensure to require your model for database sync
+import { initializeDatabase } from './Config/Rule.js';
 
 const app = express();
 const PORT = 3000;
@@ -26,6 +23,14 @@ app.get('/', (req, res) => {
 // Use rule routes
 app.use('/api/rules', router);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Initialize the database and table
+initializeDatabase()
+    .then(() => {
+        console.log('Database initialized successfully.');
+        app.listen(PORT, () => {
+            console.log(`Server is running on http://localhost:${PORT}`);
+        });
+    })
+    .catch(error => {
+        console.error('Error initializing database:', error);
+    });

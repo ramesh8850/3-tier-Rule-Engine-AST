@@ -10,9 +10,10 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">3-Tier Rule Engine Application</h1>
+        <h1 class="text-center">Rule Engine Application</h1>
         <div class="row">
             <div class="col-md-6">
+                <!-- Create Rule Section -->
                 <div class="card">
                     <div class="card-header">
                         <h2>Create Rule</h2>
@@ -27,13 +28,13 @@
                                 <label for="ruleString">Rule:</label>
                                 <input type="text" class="form-control" id="ruleString" name="ruleString" required>
                             </div>
-                            <button type="submit" class="btn btn-custom">Create Rule</button>
+                            <button type="submit" class="btn btn-primary">Create Rule</button>
                         </form>
                         <pre id="create-rule-result"></pre>
-                        <div id="duplicate-rule-message" class="duplicate-rule-message"></div>
                     </div>
                 </div>
 
+                <!-- Combine Rules Section -->
                 <div class="card">
                     <div class="card-header">
                         <h2>Combine Rules</h2>
@@ -53,12 +54,13 @@
                                 </div>
                             </div>
                             <button type="button" class="btn btn-link" id="add-rule">Add Another Rule</button>
-                            <button type="submit" class="btn btn-custom">Combine Rules</button>
+                            <button type="submit" class="btn btn-primary">Combine Rules</button>
                         </form>
                         <pre id="combine-rules-result"></pre>
                     </div>
                 </div>
 
+                <!-- Evaluate Rule Section -->
                 <div class="card">
                     <div class="card-header">
                         <h2>Evaluate Rule</h2>
@@ -66,24 +68,35 @@
                     <div class="card-body">
                         <form id="evaluate-rule-form">
                             <div class="form-group">
-                                <label for="evaluate-ast">Rule Name:</label>
+                                <label for="evaluate-ast">AST:</label>
                                 <input type="text" class="form-control" id="evaluate-ast" name="ast" required>
                             </div>
                             <div class="form-group">
                                 <label for="evaluate-data">Data JSON:</label>
                                 <textarea class="form-control" id="evaluate-data" name="data" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-custom">Evaluate Rule</button>
+                            <button type="submit" class="btn btn-primary">Evaluate Rule</button>
                         </form>
                         <pre id="evaluate-rule-result"></pre>
                     </div>
                 </div>
             </div>
 
+            <!-- AST Display Section -->
             <div class="col-md-6">
                 <div class="ast-container">
                     <h2 class="text-center">AST Display</h2>
                     <div id="combined-rules-tree"></div>
+                </div>
+
+                <!-- Display Rule Name -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Created or Combined Rule Name</h2>
+                    </div>
+                    <div class="card-body">
+                        <p id="rule-name-display" class="text-center"></p> <!-- Rule name will display here -->
+                    </div>
                 </div>
             </div>
         </div>
