@@ -80,9 +80,16 @@ To run the Rule Engine Application, you need to install the following dependenci
 
 ## Usage
 - To create a rule, enter the rule name and rule string in the form provided in the UI.
+- ![image](https://github.com/user-attachments/assets/70ac3267-587d-4af8-a4e2-09925425b988)
+- Displays at bottom right page
+- ![image](https://github.com/user-attachments/assets/2579230d-eecd-4dd3-9beb-fcf131419b34)
 - Combine rules by selecting existing rules and the desired operator.
+- ![image](https://github.com/user-attachments/assets/fa0744d1-5575-4cce-926a-fe6d5e5cadfe)
+- ![image](https://github.com/user-attachments/assets/93d430cd-b2a1-4c77-b364-ff2f36b0c994)
+- ![image](https://github.com/user-attachments/assets/bccfad47-6638-40c8-912e-ae0f59f3cd04)
 - Evaluate a rule by providing the rule name and data in JSON format.
-
+- ![image](https://github.com/user-attachments/assets/e92d5565-4fbe-46b4-9263-e926b948bb7b)
+- Please input correct input rules and json data like  dont provide "{ key: value{ object}}}" avoid double quotes for the input of json data and create rule data.
 ## Contributing
 Contributions are welcome! If you have suggestions for improvements, please open an issue or submit a pull request.
 
